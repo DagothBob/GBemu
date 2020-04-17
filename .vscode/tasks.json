@@ -7,9 +7,10 @@
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-g",
-				"${file}",
+				"${workspaceFolder}/*.cpp",
 				"-o",
-				"${fileDirname}/${fileBasenameNoExtension}"
+				"${fileDirname}/GBemu",
+				"-lSDL2"
 			],
 			"options": {
 				"cwd": "/usr/bin"
