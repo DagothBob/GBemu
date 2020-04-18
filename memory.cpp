@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <iostream>
 
 namespace emu {
     class memory {
@@ -27,6 +28,41 @@ namespace emu {
         // Initialize memory to boot-up state
         memory() {
             fill_zeroes(memory_map);
+        }
+
+        void set_memory(uint16_t addr, uint8_t val) {
+            if      (addr < 0x4000) {
+                memory_map.ROMbank0[addr] = val;
+            }
+            else if (addr < 0x8000) {
+                memory_map.ROMbank_sw[addr - 0x4000] = val;
+            }
+            else if (addr < 0xA000) {
+                memory_map.vRAM[addr - 0x8000] = val;
+            }
+            else if (addr < 0xC000) {
+                memory_map.sw_RAM[addr - 0xA000] = val;
+            }
+            else if (addr < 0xE000) {
+                memory_map.RAM[addr - 0xC000] = val;
+            }
+            else if (addr < 0xFE00) {
+                memory_map.RAM[addr - 0xE000] = val;
+            }
+            else if (addr < 0xFF00) {
+                memory_map.sprite_attrib[addr - 0xFE00] = val;
+            }
+            else if (addr < 0xFF80) {
+                memory_map.IO_ports[addr - 0xFF00] = val;
+            }
+            else if (addr < 0x10000) {
+                memory_map.RAM2[addr - 0xFF80] = val;
+            }
+            else {
+                std::cerr << "Error: Memory write outside address space \n";
+                std::cerr << "At address " << addr << "\n";
+                std::cerr << "With value " << val << "\n";
+            }
         }
         
         private: //////////////////////////////////////////////////
@@ -60,6 +96,10 @@ namespace emu {
             for (std::size_t i = 0; i < sizeof(p.RAM2); i++) {
                 p.RAM2[i] = 0;
             }
+        }
+
+        void init_stack(memoryMap p) {
+            
         }
     };
 }
