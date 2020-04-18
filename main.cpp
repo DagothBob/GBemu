@@ -1,9 +1,32 @@
+/*
+ * GBemu
+ * - A GameBoy emulator that is not better
+ *   than any other emulator at anything.
+ * 
+ * Made by:
+ * - Holger Jensen
+ * - https://github.com/DagothBob/
+ * 
+ * Gameboy CPU manual:
+ * http://marc.rawer.de/Gameboy/Docs/GBCPUman.pdf
+ * 
+ * The purpose of code in this class is to pass
+ * data in compatible formats, between GB components
+ * and real components eg. send pixel data to SDL,
+ * send the ROM file to GB memory, etc.
+ */
+
 // C++ libraries
 #include <iostream>
 
 // SDL libraries
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_video.h"
+
+// GBemu sources
+#include "cpu.cpp"
+#include "memory.cpp"
+#include "display.cpp"
 
 namespace emu {
     void initDisplay();
