@@ -62,6 +62,42 @@ namespace emu {
                 std::cerr << "Error: Memory write outside address space \n";
                 std::cerr << "At address " << addr << "\n";
                 std::cerr << "With value " << val << "\n";
+                std::exit(1);
+            }
+        }
+
+        uint8_t get_memory(uint16_t addr) {
+            if      (addr < 0x4000) {
+                return memory_map.ROMbank0[addr];
+            }
+            else if (addr < 0x8000) {
+                return memory_map.ROMbank_sw[addr - 0x4000];
+            }
+            else if (addr < 0xA000) {
+                return memory_map.vRAM[addr - 0x8000];
+            }
+            else if (addr < 0xC000) {
+                return memory_map.sw_RAM[addr - 0xA000];
+            }
+            else if (addr < 0xE000) {
+                return memory_map.RAM[addr - 0xC000];
+            }
+            else if (addr < 0xFE00) {
+                return memory_map.RAM[addr - 0xE000];
+            }
+            else if (addr < 0xFF00) {
+                return memory_map.sprite_attrib[addr - 0xFE00];
+            }
+            else if (addr < 0xFF80) {
+                return memory_map.IO_ports[addr - 0xFF00];
+            }
+            else if (addr < 0x10000) {
+                return memory_map.RAM2[addr - 0xFF80];
+            }
+            else {
+                std::cerr << "Error: Memory read outside address space \n";
+                std::cerr << "At address " << addr << "\n";
+                std::exit(1);
             }
         }
         

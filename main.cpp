@@ -29,6 +29,7 @@
 #include "display.cpp"
 
 namespace emu {
+    void exit();
     void initDisplay();
     void handleEvents();
 
@@ -48,12 +49,19 @@ int main(int argc, char** argv) {
     // Main loop //
     ///////////////
     emu::quit = false;
-
+    
     while (!emu::quit)
     {
         emu::handleEvents();
     }
-    return 0;
+    std::exit(0);
+}
+
+////////////////////////
+// Clean up resources //
+////////////////////////
+void emu::exit() {
+    SDL_Quit();
 }
 
 ////////////////////////////
