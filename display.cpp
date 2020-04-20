@@ -1,5 +1,1 @@
-namespace emu {
-    class display {
-
-    };
-}
+#include "display.h"

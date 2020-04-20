@@ -16,25 +16,7 @@
  * send the ROM file to GB memory, etc.
  */
 
-// C++ libraries
-#include <iostream>
-
-// SDL libraries
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_video.h"
-
-// GBemu sources
-#include "cpu.cpp"
-#include "memory.cpp"
-#include "display.cpp"
-
-namespace emu {
-    void exit();
-    void initDisplay();
-    void handleEvents();
-
-    bool quit;
-}
+#include "main.h"
 
 int main(int argc, char** argv) {
     //////////////////////////////
@@ -43,16 +25,18 @@ int main(int argc, char** argv) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "Error initializing SDL: " << SDL_GetError();
     }
-    emu::initDisplay();
+    initDisplay();
     
     ///////////////
     // Main loop //
     ///////////////
-    emu::quit = false;
+    quit = false;
+    std::cout << (0b11111111 >> 1);
+    std::cout << (0b10000000 >> 1);
     
-    while (!emu::quit)
+    while (!quit)
     {
-        emu::handleEvents();
+        handleEvents();
     }
     std::exit(0);
 }
@@ -60,14 +44,14 @@ int main(int argc, char** argv) {
 ////////////////////////
 // Clean up resources //
 ////////////////////////
-void emu::exit() {
+void exit() {
     SDL_Quit();
 }
 
 ////////////////////////////
 // Initialize SDL display //
 ////////////////////////////
-void emu::initDisplay() {
+void initDisplay() {
     SDL_Window* window = SDL_CreateWindow("GBemu",
                                         SDL_WINDOWPOS_CENTERED, 
                                         SDL_WINDOWPOS_CENTERED,
@@ -86,7 +70,7 @@ void emu::initDisplay() {
 // Part of main loop.  //
 // Handles input, etc. //
 /////////////////////////
-void emu::handleEvents() {
+void handleEvents() {
     SDL_Event e;
 
     // SDL events //
@@ -94,7 +78,7 @@ void emu::handleEvents() {
         switch (e.type)
         {
         case SDL_QUIT:
-            emu::quit = true;
+            quit = true;
             break;
         default:
             break;
