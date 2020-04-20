@@ -31,8 +31,6 @@ int main(int argc, char** argv) {
     // Main loop //
     ///////////////
     quit = false;
-    std::cout << (0b11111111 >> 1);
-    std::cout << (0b10000000 >> 1);
     
     while (!quit)
     {

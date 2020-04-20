@@ -39,7 +39,7 @@ void Memory::set_memory(uint16_t addr, uint8_t val) {
     else if (addr < 0xFF80) {
         memory_map.IO_ports[addr - 0xFF00] = val;
     }
-    else if (addr < 0x10000) {
+    else if (addr <= 0xFFFF) {
         memory_map.RAM2[addr - 0xFF80] = val;
     }
     else {
@@ -76,7 +76,7 @@ uint8_t Memory::get_memory(uint16_t addr) {
     else if (addr < 0xFF80) {
         return memory_map.IO_ports[addr - 0xFF00];
     }
-    else if (addr < 0x10000) {
+    else if (addr <= 0xFFFF) {
         return memory_map.RAM2[addr - 0xFF80];
     }
     else {

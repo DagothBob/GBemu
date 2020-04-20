@@ -472,7 +472,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldHL = concat_regist(registers.H, registers.L);
         HL = oldHL;
 
-        if (registers.F & FLAG_CARY > 0x0)
+        if ((registers.F & FLAG_CARY) > 0x0)
             HL = concat_regist(registers.B, registers.C) + 0x1;
         else
             HL = concat_regist(registers.B, registers.C);
@@ -499,7 +499,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldHL = concat_regist(registers.H, registers.L);
         HL = oldHL;
 
-        if (registers.F & FLAG_CARY > 0x0)
+        if ((registers.F & FLAG_CARY) > 0x0)
             HL = concat_regist(registers.D, registers.E) + 0x1;
         else
             HL = concat_regist(registers.D, registers.E);
@@ -526,7 +526,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldHL = concat_regist(registers.H, registers.L);
         HL = oldHL;
 
-        if (registers.F & FLAG_CARY > 0x0)
+        if ((registers.F & FLAG_CARY) > 0x0)
             HL = concat_regist(registers.H, registers.L) + 0x1;
         else
             HL = concat_regist(registers.H, registers.L);
@@ -553,7 +553,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldHL = concat_regist(registers.H, registers.L);
         HL = oldHL;
 
-        if (registers.F & FLAG_CARY > 0x0)
+        if ((registers.F & FLAG_CARY) > 0x0)
             HL = registers.SP + 0x1;
         else
             HL = registers.SP;
@@ -748,7 +748,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.B + 0x1);
             carry = true;
         }
@@ -784,7 +784,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.C + 0x1);
             carry = true;
         }
@@ -820,7 +820,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.D + 0x1);
             carry = true;
         }
@@ -856,7 +856,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.E + 0x1);
             carry = true;
         }
@@ -892,7 +892,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.H + 0x1);
             carry = true;
         }
@@ -928,7 +928,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.L + 0x1);
             carry = true;
         }
@@ -965,7 +965,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (get + 0x1);
             carry = true;
         }
@@ -1001,7 +1001,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += (registers.A + 0x1);
             carry = true;
         }
@@ -1058,7 +1058,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A += ((uint8_t)arg + 0x1);
             carry = true;
         }
@@ -1093,7 +1093,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0xE8):
         oldSP = registers.SP;
 
-        if (registers.F & FLAG_CARY > 0x0)
+        if ((registers.F & FLAG_CARY) > 0x0)
             registers.SP = arg + 0x1;
         else
             registers.SP = arg;
@@ -1293,7 +1293,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.B - 0x1);
             carry = true;
         }
@@ -1329,7 +1329,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.C - 0x1);
             carry = true;
         }
@@ -1365,7 +1365,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.D - 0x1);
             carry = true;
         }
@@ -1401,7 +1401,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.E - 0x1);
             carry = true;
         }
@@ -1437,7 +1437,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.H - 0x1);
             carry = true;
         }
@@ -1473,7 +1473,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.L - 0x1);
             carry = true;
         }
@@ -1510,7 +1510,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (get - 0x1);
             carry = true;
         }
@@ -1546,7 +1546,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= (registers.A - 0x1);
             carry = true;
         }
@@ -1603,7 +1603,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         oldA = registers.A;
         carry = false;
 
-        if (registers.F & FLAG_CARY > 0x0) {
+        if ((registers.F & FLAG_CARY) > 0x0) {
             registers.A -= ((uint8_t)arg - 0x1);
             carry = true;
         }
@@ -2611,7 +2611,7 @@ void CPU::op_Complement(uint8_t opcode, uint16_t arg) {
 }
 
 void CPU::op_CompCarry(uint8_t opcode, uint16_t arg) {
-    if (registers.F & FLAG_CARY == 0x0)
+    if ((registers.F & FLAG_CARY) == 0x0)
         registers.F |= FLAG_CARY;
     else 
         registers.F &= ~FLAG_CARY;
