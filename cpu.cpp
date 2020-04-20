@@ -401,18 +401,18 @@ namespace emu {
 
                 registers.H = (uint8_t)(SPn >> 8);
                 registers.L = (uint8_t)SPn;
-                registers.F = registers.F & ~FLAG_ZERO;
-                registers.F = registers.F & ~FLAG_ADSB;
+                registers.F = registers.F &= ~FLAG_ZERO;
+                registers.F = registers.F &= ~FLAG_ADSB;
 
                 if (SPn < arg)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if (oldL > registers.L)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0xF9):
                 registers.SP = concat_regist(registers.H, registers.L);
@@ -504,17 +504,17 @@ namespace emu {
                 if (HL == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldHL > HL)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if (registers.L < (uint8_t)oldHL)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x19):
                 uint16_t oldHL = concat_regist(registers.H, registers.L);
@@ -531,17 +531,17 @@ namespace emu {
                 if (HL == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldHL > HL)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if (registers.L < (uint8_t)oldHL)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x29):
                 uint16_t oldHL = concat_regist(registers.H, registers.L);
@@ -558,17 +558,17 @@ namespace emu {
                 if (HL == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldHL > HL)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if (registers.L < (uint8_t)oldHL)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x39):
                 uint16_t oldHL = concat_regist(registers.H, registers.L);
@@ -585,17 +585,17 @@ namespace emu {
                 if (HL == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldHL > HL)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if (registers.L < (uint8_t)oldHL)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x80):
                 uint8_t oldA = registers.A;
@@ -604,12 +604,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if ((oldA & 0xF) + (registers.B & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x81):
                 uint8_t oldA = registers.A;
@@ -618,12 +623,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (registers.C & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x82):
                 uint8_t oldA = registers.A;
@@ -632,12 +642,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (registers.D & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x83):
                 uint8_t oldA = registers.A;
@@ -646,12 +661,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (registers.E & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x84):
                 uint8_t oldA = registers.A;
@@ -660,12 +680,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (registers.H & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x85):
                 uint8_t oldA = registers.A;
@@ -674,12 +699,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (registers.L & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x86):
                 uint8_t oldA = registers.A;
@@ -688,12 +718,17 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if ((oldA & 0xF) + (gbmemory.get_memory(swap_endian(concat_regist(registers.H, registers.L))) & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x87):
                 uint8_t oldA = registers.A;
@@ -702,157 +737,290 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if ((oldA & 0xF) + (oldA & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0x88):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.B + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.B;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.B + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.B) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x89):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.C + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.C;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.C + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.C) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8A):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.D + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.D;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.D + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.D) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8B):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.E + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.E;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.E + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.E) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8C):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.H + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.H;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.H + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.H) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8D):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.L + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.L;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((registers.L + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((registers.L) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8E):
                 uint8_t oldA = registers.A;
                 uint8_t get = gbmemory.get_memory(swap_endian(concat_regist(registers.H, registers.L)));
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (get + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += get;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((get + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((get) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0x8F):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += (registers.A + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += registers.A;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + ((oldA + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + ((oldA) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0xC6):
                 uint8_t oldA = registers.A;
@@ -861,30 +1029,51 @@ namespace emu {
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+
+                if ((oldA & 0xF) + (((uint8_t)arg) & 0xF) & 0x10)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             case (0xCE):
                 uint8_t oldA = registers.A;
+                bool carry = false;
 
-                if (registers.F & FLAG_CARY > 0x0)
+                if (registers.F & FLAG_CARY > 0x0) {
                     registers.A += ((uint8_t)arg + 0x1);
+                    carry = true;
+                }
                 else
                     registers.A += (uint8_t)arg;
                 
                 if (registers.A == 0x0)
                     registers.F |= FLAG_ZERO;
 
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldA > registers.A)
-                    registers.F |= FLAG_HALF;
+                    registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_CARY;
+
+                if (carry) {
+                    if ((oldA & 0xF) + (((uint8_t)arg + 0x1) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if ((oldA & 0xF) + (((uint8_t)arg) & 0xF) & 0x10)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
                 break;
             case (0xE8):
                 uint16_t oldSP = registers.SP;
@@ -894,18 +1083,18 @@ namespace emu {
                 else
                     registers.SP = arg;
                 
-                registers.F & ~FLAG_ZERO;
-                registers.F & ~FLAG_ADSB;
+                registers.F &= ~FLAG_ZERO;
+                registers.F &= ~FLAG_ADSB;
 
                 if (oldSP > registers.SP)
                     registers.F |= FLAG_CARY;
                 else
-                    registers.F & ~FLAG_CARY;
+                    registers.F &= ~FLAG_CARY;
                 
                 if ((uint8_t)registers.SP < (uint8_t)oldSP)
                     registers.F |= FLAG_HALF;
                 else
-                    registers.F & ~FLAG_HALF;
+                    registers.F &= ~FLAG_HALF;
                 break;
             default:
                 break;
@@ -913,7 +1102,471 @@ namespace emu {
         }
 
         void op_Subtract(uint8_t opcode, uint16_t arg) {
+            switch (opcode) {
+            case (0x90):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.B;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
 
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.B & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x91):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.C;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.C & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x92):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.D;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.D & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x93):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.E;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.E & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x94):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.H;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.H & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x95):
+                uint8_t oldA = registers.A;
+                registers.A -= registers.L;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (registers.L & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x96):
+                uint8_t oldA = registers.A;
+                registers.A -= gbmemory.get_memory(swap_endian(concat_regist(registers.H, registers.L)));
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - (gbmemory.get_memory(swap_endian(concat_regist(registers.H, registers.L))) & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0x97):
+                break;
+            case (0x98):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.B - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.B;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.B - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.B & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x99):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.C - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.C;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.C - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.C & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9A):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.D - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.D;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.D - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.D & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9B):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.E - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.E;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.E - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.E & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9C):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.H - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.H;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.H - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.H & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9D):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.L - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.L;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.L - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.L & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9E):
+                uint8_t oldA = registers.A;
+                uint8_t get = gbmemory.get_memory(swap_endian(concat_regist(registers.H, registers.L)));
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (get - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= get;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((get - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (get & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0x9F):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= (registers.A - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= registers.A;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - ((registers.A - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - (registers.A & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            case (0xD6):
+                uint8_t oldA = registers.A;
+                registers.A -= (uint8_t)arg;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F &= ~FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (((oldA & 0xF) - ((uint8_t)arg & 0xF) & 0x10) < 0)
+                    registers.F |= FLAG_HALF;
+                else
+                    registers.F &= ~FLAG_HALF;
+                break;
+            case (0xDE):
+                uint8_t oldA = registers.A;
+                bool carry = false;
+
+                if (registers.F & FLAG_CARY > 0x0) {
+                    registers.A -= ((uint8_t)arg - 0x1);
+                    carry = true;
+                }
+                else
+                    registers.A -= (uint8_t)arg;
+                
+                if (registers.A == 0x0)
+                    registers.F |= FLAG_ZERO;
+
+                registers.F |= FLAG_ADSB;
+
+                if (oldA < registers.A)
+                    registers.F |= FLAG_CARY;
+                else
+                    registers.F &= ~FLAG_CARY;
+                
+                if (carry) {
+                    if (((oldA & 0xF) - (((uint8_t)arg - 0x1) & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                else {
+                    if (((oldA & 0xF) - ((uint8_t)arg & 0xF) & 0x10) < 0)
+                        registers.F |= FLAG_HALF;
+                    else
+                        registers.F &= ~FLAG_HALF;
+                }
+                break;
+            default:
+                break;
+            }
         }
 
         void op_And(uint8_t opcode, uint16_t arg) {
