@@ -30,6 +30,7 @@ namespace emu {
             fill_zeroes(memory_map);
         }
 
+        // GB is little-endian
         void set_memory(uint16_t addr, uint8_t val) {
             if      (addr < 0x4000) {
                 memory_map.ROMbank0[addr] = val;
@@ -66,6 +67,7 @@ namespace emu {
             }
         }
 
+        // GB is little-endian
         uint8_t get_memory(uint16_t addr) {
             if      (addr < 0x4000) {
                 return memory_map.ROMbank0[addr];
