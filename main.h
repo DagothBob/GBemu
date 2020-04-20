@@ -5,8 +5,8 @@
 #include <iostream>
 
 // SDL libraries
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_video.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
 
 // GBemu sources
 #include "cpu.h"
