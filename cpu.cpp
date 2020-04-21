@@ -3179,6 +3179,7 @@ void CPU::op_Rotate(uint8_t opcode, uint16_t arg) {
 
 void CPU::op_Shift(uint8_t opcode, uint16_t arg) {
     uint8_t get, set;
+    bool msb;
 
     switch (opcode) {
     case (0x20):
@@ -3310,6 +3311,334 @@ void CPU::op_Shift(uint8_t opcode, uint16_t arg) {
 
         if (registers.F & FLAG_CARY)
             registers.A = registers.A << 1;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.A == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x28):
+        if ((registers.B << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.B >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.B = (registers.B >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.B = (registers.B >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.B == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x29):
+        if ((registers.C << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.C >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.C = (registers.C >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.C = (registers.C >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.C == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2A):
+        if ((registers.D << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.D >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.D = (registers.D >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.D = (registers.D >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.D == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2B):
+        if ((registers.E << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.E >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.E = (registers.E >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.E = (registers.E >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.E == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2C):
+        if ((registers.H << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.H >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.H = (registers.H >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.H = (registers.H >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.H == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2D):
+        if ((registers.L << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.L >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.L = (registers.L >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.L = (registers.L >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.L == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2E):
+        get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+
+        if ((get << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((get >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                gbmemory.set_memory(concat_regist(registers.L, registers.H), (get >> 1) | 0b00000000);
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                gbmemory.set_memory(concat_regist(registers.L, registers.H), (get >> 1) | 0b10000000);
+        }
+
+        set = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (set == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x2F):
+        if ((registers.A << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if ((registers.A >> 7) == 0x0) {
+            if (registers.F & FLAG_CARY)
+                registers.A = (registers.A >> 1) | 0b00000000;
+        }
+        else {
+            if (registers.F & FLAG_CARY)
+                registers.A = (registers.A >> 1) | 0b10000000;
+        }
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.A == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x38):
+        if ((registers.B << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.B = (registers.B >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.B == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x39):
+        if ((registers.C << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.C = (registers.C >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.C == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3A):
+        if ((registers.D << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.D = (registers.D >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.D == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3B):
+        if ((registers.E << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.E = (registers.E >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.E == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3C):
+        if ((registers.H << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.H = (registers.H >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.H == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3D):
+        if ((registers.L << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.L = (registers.L >> 1) | 0b00000000;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (registers.L == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3E):
+        get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+
+        if ((get << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            gbmemory.set_memory(concat_regist(registers.L, registers.H), (get >> 1) | 0b00000000);
+
+        set = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F &= ~FLAG_HALF;
+
+        if (set == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+        break;
+    case (0x3F):
+        if ((registers.A << 7) == 0x0)
+            registers.F &= ~FLAG_CARY;
+        else
+            registers.F |= FLAG_CARY;
+
+        if (registers.F & FLAG_CARY)
+            registers.A = (registers.A >> 1) | 0b00000000;
 
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
