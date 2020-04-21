@@ -2,7 +2,6 @@
 #define DISPLAY_H
 
 class Display {
-
 };
 
 #endif

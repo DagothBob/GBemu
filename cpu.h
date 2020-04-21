@@ -2,8 +2,8 @@
 #define CPU_H
 
 // C++ libraries
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 
 // GBemu sources
@@ -17,14 +17,14 @@ class CPU {
     const uint8_t FLAG_CARY = 0b00010000;
 
     struct registerMap {
-        uint8_t A; // Accumulator, general
-        uint8_t B; // Counter, general, BC byte counter
-        uint8_t C; // Counter, ports, general, BC byte counter
-        uint8_t D; // General, destination address
-        uint8_t E; // General, destination address
-        uint8_t F; // Flags - Zero | Add/Sub | Half | Carry | 0000
-        uint8_t H; // General, HL 16-bit accumulator
-        uint8_t L; // General, HL 16-bit accumulator
+        uint8_t A;   // Accumulator, general
+        uint8_t B;   // Counter, general, BC byte counter
+        uint8_t C;   // Counter, ports, general, BC byte counter
+        uint8_t D;   // General, destination address
+        uint8_t E;   // General, destination address
+        uint8_t F;   // Flags - Zero | Add/Sub | Half | Carry | 0000
+        uint8_t H;   // General, HL 16-bit accumulator
+        uint8_t L;   // General, HL 16-bit accumulator
         uint16_t SP; // Stack pointer
         uint16_t PC; // Program counter
     } registers;
@@ -33,11 +33,11 @@ class CPU {
     void (CPU::*CBops[0x100])(uint8_t, uint16_t);
     Memory gbmemory;
 
-    CPU(Memory &mem);
+    CPU(Memory& mem);
     uint16_t swap_endian(uint16_t bytes);
     uint16_t concat_regist(uint8_t most, uint8_t least);
-    void dec_16bit(uint8_t &most, uint8_t &least);
-    void inc_16bit(uint8_t &most, uint8_t &least);
+    void dec_16bit(uint8_t& most, uint8_t& least);
+    void inc_16bit(uint8_t& most, uint8_t& least);
     void op_Load(uint8_t opcode, uint16_t arg);
     void op_Push(uint8_t opcode, uint16_t arg);
     void op_Pop(uint8_t opcode, uint16_t arg);

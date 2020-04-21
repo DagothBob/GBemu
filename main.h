@@ -10,8 +10,8 @@
 
 // GBemu sources
 #include "cpu.h"
-#include "memory.h"
 #include "display.h"
+#include "memory.h"
 
 bool quit;
 

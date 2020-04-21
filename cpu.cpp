@@ -10,7 +10,8 @@ struct CPU::registerMap registers;
 
 // Array mapping OP code (as index) to function for handling the OP code
 void (CPU::*opcodes[0x100])(uint8_t, uint16_t) = {
-//  x0             x1             x2             x3             x4             x5             x6             x7             x8             x9             xA             xB             xC             xD             xE             xF
+    // clang-format off
+//  x0                  x1                  x2                  x3                  x4                  x5                  x6                  x7                  x8                  x9                  xA                  xB                  xC                  xD                  xE                  xF
     &CPU::op_Nop,       &CPU::op_Load,      &CPU::op_Load,      &CPU::op_Increment, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Rotate,    &CPU::op_Load,      &CPU::op_Add,       &CPU::op_Load,      &CPU::op_Decrement, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Rotate,
     &CPU::op_Stop,      &CPU::op_Load,      &CPU::op_Load,      &CPU::op_Increment, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Rotate,    &CPU::op_Jump,      &CPU::op_Add,       &CPU::op_Load,      &CPU::op_Decrement, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Rotate,
     &CPU::op_Jump,      &CPU::op_Load,      &CPU::op_Load,      &CPU::op_Increment, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Decimal,   &CPU::op_Jump,      &CPU::op_Add,       &CPU::op_Load,      &CPU::op_Decrement, &CPU::op_Increment, &CPU::op_Decrement, &CPU::op_Load,      &CPU::op_Complement,
@@ -27,12 +28,12 @@ void (CPU::*opcodes[0x100])(uint8_t, uint16_t) = {
     &CPU::op_Return,    &CPU::op_Pop,       &CPU::op_Jump,      &CPU::op_Unknown,   &CPU::op_Call,      &CPU::op_Push,      &CPU::op_Subtract,  &CPU::op_Restart,   &CPU::op_Return,    &CPU::op_Return,    &CPU::op_Jump,      &CPU::op_Unknown,   &CPU::op_Call,      &CPU::op_Unknown,   &CPU::op_Subtract,  &CPU::op_Restart,
     &CPU::op_Load,      &CPU::op_Pop,       &CPU::op_Load,      &CPU::op_Unknown,   &CPU::op_Unknown,   &CPU::op_Push,      &CPU::op_And,       &CPU::op_Restart,   &CPU::op_Add,       &CPU::op_Jump,      &CPU::op_Load,      &CPU::op_Unknown,   &CPU::op_Unknown,   &CPU::op_Unknown,   &CPU::op_Xor,       &CPU::op_Restart,
     &CPU::op_Load,      &CPU::op_Pop,       &CPU::op_Load,      &CPU::op_DInterrupt,&CPU::op_Unknown,   &CPU::op_Push,      &CPU::op_Or,        &CPU::op_Restart,   &CPU::op_Load,      &CPU::op_Load,      &CPU::op_Load,      &CPU::op_EInterrupt,&CPU::op_Unknown,   &CPU::op_Unknown,   &CPU::op_Compare,   &CPU::op_Restart
-//  x0             x1             x2             x3             x4             x5             x6             x7             x8             x9             xA             xB             xC             xD             xE             xF
+//  x0                  x1                  x2                  x3                  x4                  x5                  x6                  x7                  x8                  x9                  xA                  xB                  xC                  xD                  xE                  xF
 };
 
 // Maps Z80-added "CB" OP codes
 void (CPU::*CBops[0x100])(uint8_t, uint16_t) = {
-//  x0             x1             x2             x3             x4             x5             x6             x7             x8             x9             xA             xB             xC             xD             xE             xF
+//  x0                  x1                  x2                  x3                  x4                  x5                  x6                  x7                  x8                  x9                  xA                  xB                  xC                  xD                  xE                  xF
     &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,
     &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,    &CPU::op_Rotate,
     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,     &CPU::op_Shift,
@@ -49,11 +50,12 @@ void (CPU::*CBops[0x100])(uint8_t, uint16_t) = {
     &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,
     &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,
     &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit,       &CPU::op_Bit
-//  x0             x1             x2             x3             x4             x5             x6             x7             x8             x9             xA             xB             xC             xD             xE             xF
+//  x0                  x1                  x2                  x3                  x4                  x5                  x6                  x7                  x8                  x9                  xA                  xB                  xC                  xD                  xE                  xF
+    // clang-format on
 };
 
 // Initialize registers to boot-up state
-CPU::CPU(Memory &mem) {
+CPU::CPU(Memory& mem) {
     gbmemory = mem;
     registers.A = 0x01;
     registers.B = 0x00;
@@ -76,13 +78,13 @@ uint16_t CPU::concat_regist(uint8_t most, uint8_t least) {
     return (uint16_t)((most << 8) | least);
 }
 
-void CPU::dec_16bit(uint8_t &most, uint8_t &least) {
+void CPU::dec_16bit(uint8_t& most, uint8_t& least) {
     uint16_t dec = concat_regist(most, least) - 0x1;
     most = (uint8_t)(dec >> 8);
     least = (uint8_t)dec;
 }
 
-void CPU::inc_16bit(uint8_t &most, uint8_t &least) {
+void CPU::inc_16bit(uint8_t& most, uint8_t& least) {
     uint16_t dec = concat_regist(most, least) + 0x1;
     most = (uint8_t)(dec >> 8);
     least = (uint8_t)dec;
@@ -382,12 +384,12 @@ void CPU::op_Load(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (oldL > registers.L)
             registers.F |= FLAG_HALF;
         else
             registers.F &= ~FLAG_HALF;
-        
+
         break;
     case (0xF9):
         registers.SP = concat_regist(registers.H, registers.L);
@@ -402,63 +404,63 @@ void CPU::op_Load(uint8_t opcode, uint16_t arg) {
 
 void CPU::op_Push(uint8_t opcode, uint16_t arg) {
     switch (opcode) {
-        case (0xC5):
-            gbmemory.set_memory(registers.SP, registers.B);
-            registers.SP--;
-            gbmemory.set_memory(registers.SP, registers.C);
-            registers.SP--;
-            break;
-        case (0xD5):
-            gbmemory.set_memory(registers.SP, registers.D);
-            registers.SP--;
-            gbmemory.set_memory(registers.SP, registers.E);
-            registers.SP--;
-            break;
-        case (0xE5):
-            gbmemory.set_memory(registers.SP, registers.H);
-            registers.SP--;
-            gbmemory.set_memory(registers.SP, registers.L);
-            registers.SP--;
-            break;
-        case (0xF5):
-            gbmemory.set_memory(registers.SP, registers.A);
-            registers.SP--;
-            gbmemory.set_memory(registers.SP, registers.F);
-            registers.SP--;
-            break;
-        default:
-            break;
+    case (0xC5):
+        gbmemory.set_memory(registers.SP, registers.B);
+        registers.SP--;
+        gbmemory.set_memory(registers.SP, registers.C);
+        registers.SP--;
+        break;
+    case (0xD5):
+        gbmemory.set_memory(registers.SP, registers.D);
+        registers.SP--;
+        gbmemory.set_memory(registers.SP, registers.E);
+        registers.SP--;
+        break;
+    case (0xE5):
+        gbmemory.set_memory(registers.SP, registers.H);
+        registers.SP--;
+        gbmemory.set_memory(registers.SP, registers.L);
+        registers.SP--;
+        break;
+    case (0xF5):
+        gbmemory.set_memory(registers.SP, registers.A);
+        registers.SP--;
+        gbmemory.set_memory(registers.SP, registers.F);
+        registers.SP--;
+        break;
+    default:
+        break;
     }
 }
 
 void CPU::op_Pop(uint8_t opcode, uint16_t arg) {
     switch (opcode) {
-        case (0xC1):
-            registers.C = gbmemory.get_memory(registers.SP);
-            registers.SP++;
-            registers.B = gbmemory.get_memory(registers.SP);
-            registers.SP--;
-            break;
-        case (0xD1):
-            registers.E = gbmemory.get_memory(registers.SP);
-            registers.SP++;
-            registers.D = gbmemory.get_memory(registers.SP);
-            registers.SP--;
-            break;
-        case (0xE1):
-            registers.L = gbmemory.get_memory(registers.SP);
-            registers.SP++;
-            registers.H = gbmemory.get_memory(registers.SP);
-            registers.SP--;
-            break;
-        case (0xF1):
-            registers.F = gbmemory.get_memory(registers.SP);
-            registers.SP++;
-            registers.A = gbmemory.get_memory(registers.SP);
-            registers.SP--;
-            break;
-        default:
-            break;
+    case (0xC1):
+        registers.C = gbmemory.get_memory(registers.SP);
+        registers.SP++;
+        registers.B = gbmemory.get_memory(registers.SP);
+        registers.SP--;
+        break;
+    case (0xD1):
+        registers.E = gbmemory.get_memory(registers.SP);
+        registers.SP++;
+        registers.D = gbmemory.get_memory(registers.SP);
+        registers.SP--;
+        break;
+    case (0xE1):
+        registers.L = gbmemory.get_memory(registers.SP);
+        registers.SP++;
+        registers.H = gbmemory.get_memory(registers.SP);
+        registers.SP--;
+        break;
+    case (0xF1):
+        registers.F = gbmemory.get_memory(registers.SP);
+        registers.SP++;
+        registers.A = gbmemory.get_memory(registers.SP);
+        registers.SP--;
+        break;
+    default:
+        break;
     }
 }
 
@@ -476,10 +478,10 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             HL = concat_regist(registers.B, registers.C) + 0x1;
         else
             HL = concat_regist(registers.B, registers.C);
-        
+
         registers.H = (uint8_t)(HL >> 8);
         registers.L = (uint8_t)HL;
-        
+
         if (HL == 0x0)
             registers.F |= FLAG_ZERO;
 
@@ -489,7 +491,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (registers.L < (uint8_t)oldHL)
             registers.F |= FLAG_HALF;
         else
@@ -503,10 +505,10 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             HL = concat_regist(registers.D, registers.E) + 0x1;
         else
             HL = concat_regist(registers.D, registers.E);
-        
+
         registers.H = (uint8_t)(HL >> 8);
         registers.L = (uint8_t)HL;
-        
+
         if (HL == 0x0)
             registers.F |= FLAG_ZERO;
 
@@ -516,7 +518,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (registers.L < (uint8_t)oldHL)
             registers.F |= FLAG_HALF;
         else
@@ -530,10 +532,10 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             HL = concat_regist(registers.H, registers.L) + 0x1;
         else
             HL = concat_regist(registers.H, registers.L);
-        
+
         registers.H = (uint8_t)(HL >> 8);
         registers.L = (uint8_t)HL;
-        
+
         if (HL == 0x0)
             registers.F |= FLAG_ZERO;
 
@@ -543,7 +545,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (registers.L < (uint8_t)oldHL)
             registers.F |= FLAG_HALF;
         else
@@ -557,10 +559,10 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             HL = registers.SP + 0x1;
         else
             HL = registers.SP;
-        
+
         registers.H = (uint8_t)(HL >> 8);
         registers.L = (uint8_t)HL;
-        
+
         if (HL == 0x0)
             registers.F |= FLAG_ZERO;
 
@@ -570,7 +572,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (registers.L < (uint8_t)oldHL)
             registers.F |= FLAG_HALF;
         else
@@ -579,7 +581,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x80):
         oldA = registers.A;
         registers.A += registers.B;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -591,7 +593,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if ((oldA & 0xF) + (registers.B & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -600,7 +602,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x81):
         oldA = registers.A;
         registers.A += registers.C;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -621,7 +623,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x82):
         oldA = registers.A;
         registers.A += registers.D;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -642,7 +644,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x83):
         oldA = registers.A;
         registers.A += registers.E;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -663,7 +665,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x84):
         oldA = registers.A;
         registers.A += registers.H;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -684,7 +686,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x85):
         oldA = registers.A;
         registers.A += registers.L;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -705,7 +707,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x86):
         oldA = registers.A;
         registers.A += gbmemory.get_memory(concat_regist(registers.L, registers.H));
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -717,7 +719,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if ((oldA & 0xF) + (gbmemory.get_memory(concat_regist(registers.L, registers.H)) & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -726,7 +728,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0x87):
         oldA = registers.A;
         registers.A += registers.A;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -738,7 +740,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if ((oldA & 0xF) + (oldA & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -754,7 +756,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.B;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -766,7 +768,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if ((oldA & 0xF) + ((registers.B + 0x1) & 0xF) & 0x10)
                 registers.F |= FLAG_HALF;
@@ -790,7 +792,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.C;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -826,7 +828,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.D;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -862,7 +864,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.E;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -898,7 +900,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.H;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -934,7 +936,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.L;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -971,7 +973,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += get;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -991,7 +993,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
                 registers.F &= ~FLAG_HALF;
         }
         else {
-            if ((oldA & 0xF) + ((get) & 0xF) & 0x10)
+            if ((oldA & 0xF) + ((get)&0xF) & 0x10)
                 registers.F |= FLAG_HALF;
             else
                 registers.F &= ~FLAG_HALF;
@@ -1007,7 +1009,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += registers.A;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1027,7 +1029,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
                 registers.F &= ~FLAG_HALF;
         }
         else {
-            if ((oldA & 0xF) + ((oldA) & 0xF) & 0x10)
+            if ((oldA & 0xF) + ((oldA)&0xF) & 0x10)
                 registers.F |= FLAG_HALF;
             else
                 registers.F &= ~FLAG_HALF;
@@ -1036,7 +1038,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
     case (0xC6):
         oldA = registers.A;
         registers.A += (uint8_t)arg;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1064,7 +1066,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A += (uint8_t)arg;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1097,7 +1099,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.SP = arg + 0x1;
         else
             registers.SP = arg;
-        
+
         registers.F &= ~FLAG_ZERO;
         registers.F &= ~FLAG_ADSB;
 
@@ -1105,7 +1107,7 @@ void CPU::op_Add(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if ((uint8_t)registers.SP < (uint8_t)oldSP)
             registers.F |= FLAG_HALF;
         else
@@ -1124,7 +1126,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x90):
         oldA = registers.A;
         registers.A -= registers.B;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1136,7 +1138,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.B & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1145,7 +1147,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x91):
         oldA = registers.A;
         registers.A -= registers.C;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1157,7 +1159,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.C & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1166,7 +1168,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x92):
         oldA = registers.A;
         registers.A -= registers.D;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1178,7 +1180,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.D & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1187,7 +1189,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x93):
         oldA = registers.A;
         registers.A -= registers.E;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1199,7 +1201,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.E & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1208,7 +1210,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x94):
         oldA = registers.A;
         registers.A -= registers.H;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1220,7 +1222,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.H & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1229,7 +1231,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x95):
         oldA = registers.A;
         registers.A -= registers.L;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1241,7 +1243,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.L & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1250,7 +1252,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x96):
         oldA = registers.A;
         registers.A -= gbmemory.get_memory(concat_regist(registers.L, registers.H));
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1262,7 +1264,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (gbmemory.get_memory(concat_regist(registers.L, registers.H)) & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1271,7 +1273,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0x97):
         oldA = registers.A;
         registers.A -= registers.A;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1283,7 +1285,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - (registers.A & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1299,7 +1301,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.B;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1311,7 +1313,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.B - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1335,7 +1337,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.C;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1347,7 +1349,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.C - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1371,7 +1373,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.D;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1383,7 +1385,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.D - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1407,7 +1409,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.E;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1419,7 +1421,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.E - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1443,7 +1445,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.H;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1455,7 +1457,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.H - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1479,7 +1481,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.L;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1491,7 +1493,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.L - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1516,7 +1518,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= get;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1528,7 +1530,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((get - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1552,7 +1554,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= registers.A;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1564,7 +1566,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - ((registers.A - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1581,7 +1583,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
     case (0xD6):
         oldA = registers.A;
         registers.A -= (uint8_t)arg;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1593,7 +1595,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((oldA & 0xF) - ((uint8_t)arg & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -1609,7 +1611,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
         }
         else
             registers.A -= (uint8_t)arg;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -1621,7 +1623,7 @@ void CPU::op_Subtract(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (carry) {
             if (((oldA & 0xF) - (((uint8_t)arg - 0x1) & 0xF) & 0x10) < 0)
                 registers.F |= FLAG_HALF;
@@ -1649,7 +1651,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1661,7 +1663,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1673,7 +1675,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1685,7 +1687,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1697,7 +1699,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1709,7 +1711,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1721,7 +1723,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1733,7 +1735,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1745,7 +1747,7 @@ void CPU::op_And(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F |= FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1764,7 +1766,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1776,7 +1778,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1788,7 +1790,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1800,7 +1802,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1812,7 +1814,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1824,7 +1826,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1836,7 +1838,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1848,7 +1850,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1860,7 +1862,7 @@ void CPU::op_Or(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1877,7 +1879,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1889,7 +1891,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1901,7 +1903,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1913,7 +1915,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1925,7 +1927,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1937,7 +1939,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1949,7 +1951,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1961,7 +1963,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1973,7 +1975,7 @@ void CPU::op_Xor(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -1989,7 +1991,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
     switch (opcode) {
     case (0xB8):
         comp = registers.A - registers.B;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2001,7 +2003,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.B & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2009,7 +2011,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xB9):
         comp = registers.A - registers.C;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2021,7 +2023,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.C & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2029,7 +2031,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xBA):
         comp = registers.A - registers.D;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2041,7 +2043,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.D & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2049,7 +2051,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xBB):
         comp = registers.A - registers.E;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2061,7 +2063,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.E & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2069,7 +2071,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xBC):
         comp = registers.A - registers.H;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2081,7 +2083,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.H & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2089,7 +2091,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xBD):
         comp = registers.A - registers.L;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2101,7 +2103,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.L & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2110,7 +2112,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
     case (0xBE):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         comp = registers.A - get;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2122,7 +2124,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (get & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2130,7 +2132,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xBF):
         comp = registers.A - registers.A;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2142,7 +2144,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - (registers.A & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2150,7 +2152,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
         break;
     case (0xFE):
         comp = registers.A - (uint8_t)arg;
-        
+
         if (comp == 0x0)
             registers.F |= FLAG_ZERO;
         else
@@ -2162,7 +2164,7 @@ void CPU::op_Compare(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_CARY;
         else
             registers.F &= ~FLAG_CARY;
-        
+
         if (((registers.A & 0xF) - ((uint8_t)arg & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2187,14 +2189,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x04):
         old = registers.B;
         registers.B++;
-        
+
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2203,14 +2205,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x0C):
         old = registers.C;
         registers.C++;
-        
+
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2225,14 +2227,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x14):
         old = registers.D;
         registers.D++;
-        
+
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2241,14 +2243,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x1C):
         old = registers.E;
         registers.E++;
-        
+
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2263,14 +2265,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x24):
         old = registers.H;
         registers.H++;
-        
+
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2279,14 +2281,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x2C):
         old = registers.L;
         registers.L++;
-        
+
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2299,14 +2301,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
         old = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         gbmemory.set_memory(concat_regist(registers.L, registers.H), old + 1);
         neww = old + 1;
-        
+
         if (neww == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2315,14 +2317,14 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
     case (0x3C):
         old = registers.A;
         registers.A++;
-        
+
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F &= ~FLAG_ADSB;
-        
+
         if ((old & 0xF) + (0x1 & 0xF) & 0x10)
             registers.F |= FLAG_HALF;
         else
@@ -2341,14 +2343,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x05):
         old = registers.B;
         registers.B--;
-        
+
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2363,14 +2365,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x0D):
         old = registers.C;
         registers.C--;
-        
+
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2379,14 +2381,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x15):
         old = registers.D;
         registers.D--;
-        
+
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2401,14 +2403,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x1D):
         old = registers.E;
         registers.E--;
-        
+
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2417,14 +2419,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x25):
         old = registers.H;
         registers.H--;
-        
+
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2439,14 +2441,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
     case (0x2D):
         old = registers.L;
         registers.L--;
-        
+
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2456,14 +2458,14 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
         old = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         gbmemory.set_memory(concat_regist(registers.L, registers.H), old + 1);
         neww = old - 1;
-        
+
         if (neww == 0x0)
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
 
         registers.F |= FLAG_ADSB;
-        
+
         if (((old & 0xF) - (0x1 & 0xF) & 0x10) < 0)
             registers.F |= FLAG_HALF;
         else
@@ -2488,7 +2490,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2500,7 +2502,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2512,7 +2514,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2524,7 +2526,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2536,7 +2538,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2548,7 +2550,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2562,7 +2564,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2574,7 +2576,7 @@ void CPU::op_Swap(uint8_t opcode, uint16_t arg) {
             registers.F |= FLAG_ZERO;
         else
             registers.F &= ~FLAG_ZERO;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
         registers.F &= ~FLAG_CARY;
@@ -2595,12 +2597,12 @@ void CPU::op_Decimal(uint8_t opcode, uint16_t arg) {
         registers.F |= FLAG_ZERO;
     else
         registers.F &= ~FLAG_ZERO;
-    
+
     registers.F &= ~FLAG_HALF;
 
     if (old > registers.A)
         registers.F |= FLAG_CARY;
-    else 
+    else
         registers.F &= ~FLAG_CARY;
 }
 
@@ -2613,7 +2615,7 @@ void CPU::op_Complement(uint8_t opcode, uint16_t arg) {
 void CPU::op_CompCarry(uint8_t opcode, uint16_t arg) {
     if ((registers.F & FLAG_CARY) == 0x0)
         registers.F |= FLAG_CARY;
-    else 
+    else
         registers.F &= ~FLAG_CARY;
 
     registers.F &= ~FLAG_ADSB;
@@ -2627,7 +2629,7 @@ void CPU::op_Carry(uint8_t opcode, uint16_t arg) {
 }
 
 void CPU::op_Nop(uint8_t opcode, uint16_t arg) {
-    //Op? Nop. 
+    //Op? Nop.
 }
 
 void CPU::op_Halt(uint8_t opcode, uint16_t arg) {
@@ -2653,100 +2655,100 @@ void CPU::op_Rotate(uint8_t opcode, uint16_t arg) {
     case (0x00):
         if ((registers.B >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.B = (registers.B << 1) | (registers.B >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x01):
         if ((registers.C >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.C = (registers.C << 1) | (registers.C >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x02):
         if ((registers.D >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.D = (registers.D << 1) | (registers.D >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x03):
         if ((registers.E >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.E = (registers.E << 1) | (registers.E >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x04):
         if ((registers.H >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.H = (registers.H << 1) | (registers.H >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x05):
         if ((registers.L >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.L = (registers.L << 1) | (registers.L >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x06):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         if ((get >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         neww = (get << 1) | (get >> 7);
         gbmemory.set_memory(concat_regist(registers.L, registers.H), neww);
         registers.F &= ~FLAG_ADSB;
@@ -2754,121 +2756,121 @@ void CPU::op_Rotate(uint8_t opcode, uint16_t arg) {
 
         if (neww == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x07):
         if ((registers.A >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.A = (registers.A << 1) | (registers.A >> 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x08):
         if ((registers.B << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.B = (registers.B >> 1) | (registers.B << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x09):
         if ((registers.C << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.C = (registers.C >> 1) | (registers.C << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0A):
         if ((registers.D << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.D = (registers.D >> 1) | (registers.D << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0B):
         if ((registers.E << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.E = (registers.E >> 1) | (registers.E << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0C):
         if ((registers.H << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.H = (registers.H >> 1) | (registers.H << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0D):
         if ((registers.L << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.L = (registers.L >> 1) | (registers.L << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0E):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         if ((get << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         neww = (get >> 1) | (get << 7);
         gbmemory.set_memory(concat_regist(registers.L, registers.H), neww);
         registers.F &= ~FLAG_ADSB;
@@ -2876,298 +2878,298 @@ void CPU::op_Rotate(uint8_t opcode, uint16_t arg) {
 
         if (neww == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x0F):
         if ((registers.A << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         registers.A = (registers.A >> 1) | (registers.A << 7);
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x10):
         if ((registers.B >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.B = (registers.B << 1) | (registers.B >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x11):
         if ((registers.C >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.C = (registers.C << 1) | (registers.C >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x12):
         if ((registers.D >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.D = (registers.D << 1) | (registers.D >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x13):
         if ((registers.E >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.E = (registers.E << 1) | (registers.E >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x14):
         if ((registers.H >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.H = (registers.H << 1) | (registers.H >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x15):
         if ((registers.L >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.L = (registers.L << 1) | (registers.L >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x16):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         if ((get >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         set = (get << 1) | (get >> 7);
-        if (registers.F & FLAG_CARY) 
+        if (registers.F & FLAG_CARY)
             gbmemory.set_memory(concat_regist(registers.L, registers.H), set);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if ((set == 0x0 && registers.F & FLAG_CARY) || (get == 0x0 && ~(registers.F & FLAG_CARY)))
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x17):
         if ((registers.A >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.A = (registers.A << 1) | (registers.A >> 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x18):
         if ((registers.B << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.B = (registers.B >> 1) | (registers.B << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x19):
         if ((registers.C << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.C = (registers.C >> 1) | (registers.C << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1A):
         if ((registers.D << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.D = (registers.D >> 1) | (registers.D << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1B):
         if ((registers.E << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.E = (registers.E >> 1) | (registers.E << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1C):
         if ((registers.B << 7) == 0x0)
             registers.H &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.H = (registers.H >> 1) | (registers.H << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1D):
         if ((registers.L << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.L = (registers.L >> 1) | (registers.L << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1E):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         if ((get << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         set = (get >> 1) | (get << 7);
-        if (registers.F & FLAG_CARY) 
+        if (registers.F & FLAG_CARY)
             gbmemory.set_memory(concat_regist(registers.L, registers.H), set);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if ((set == 0x0 && registers.F & FLAG_CARY) || (get == 0x0 && ~(registers.F & FLAG_CARY)))
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x1F):
         if ((registers.A << 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.A = (registers.A >> 1) | (registers.A << 7);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     default:
@@ -3182,139 +3184,139 @@ void CPU::op_Shift(uint8_t opcode, uint16_t arg) {
     case (0x20):
         if ((registers.B >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.B = registers.B << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.B == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x21):
         if ((registers.C >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.C = registers.C << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.C == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x22):
         if ((registers.D >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.D = registers.D << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.D == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x23):
         if ((registers.E >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.E = registers.E << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.E == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x24):
         if ((registers.H >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.H = registers.H << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.H == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x25):
         if ((registers.L >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.L = registers.L << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.L == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x26):
         get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
         if ((get >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         set = get << 1;
-        if (registers.F & FLAG_CARY) 
+        if (registers.F & FLAG_CARY)
             gbmemory.set_memory(concat_regist(registers.L, registers.H), set);
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if ((set == 0x0 && registers.F & FLAG_CARY) || (get == 0x0 && ~(registers.F & FLAG_CARY)))
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     case (0x27):
         if ((registers.A >> 7) == 0x0)
             registers.F &= ~FLAG_CARY;
-        else 
+        else
             registers.F |= FLAG_CARY;
-        
+
         if (registers.F & FLAG_CARY)
             registers.A = registers.A << 1;
-        
+
         registers.F &= ~FLAG_ADSB;
         registers.F &= ~FLAG_HALF;
 
         if (registers.A == 0x0)
             registers.F |= FLAG_ZERO;
-        else 
+        else
             registers.F &= ~FLAG_ZERO;
         break;
     default:
@@ -3323,29 +3325,22 @@ void CPU::op_Shift(uint8_t opcode, uint16_t arg) {
 }
 
 void CPU::op_Bit(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_Jump(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_Call(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_Restart(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_Return(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_CB(uint8_t opcode, uint16_t arg) {
-
 }
 
 void CPU::op_Unknown(uint8_t opcode, uint16_t arg) {
-
 }

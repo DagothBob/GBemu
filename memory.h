@@ -2,13 +2,13 @@
 #define MEMORY_H
 
 // C++ libraries
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <iostream>
 
 class Memory {
     public:
-    struct memoryMap {        // (inclusive)
+    struct memoryMap {                // (inclusive)
         uint8_t ROMbank0[0x4000];     // 0x0000 - 0x3FFF
         uint8_t ROMbank_sw[0x4000];   // 0x4000 - 0x7FFF
         uint8_t vRAM[0x2000];         // 0x8000 - 0x9FFF

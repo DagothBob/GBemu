@@ -15,7 +15,7 @@ Memory::Memory() {
 
 // GB is little-endian
 void Memory::set_memory(uint16_t addr, uint8_t val) {
-    if      (addr < 0x4000) {
+    if (addr < 0x4000) {
         memory_map.ROMbank0[addr] = val;
     }
     else if (addr < 0x8000) {
@@ -52,7 +52,7 @@ void Memory::set_memory(uint16_t addr, uint8_t val) {
 
 // GB is little-endian
 uint8_t Memory::get_memory(uint16_t addr) {
-    if      (addr < 0x4000) {
+    if (addr < 0x4000) {
         return memory_map.ROMbank0[addr];
     }
     else if (addr < 0x8000) {
@@ -120,5 +120,4 @@ void Memory::fill_zeroes(Memory::memoryMap p) {
 }
 
 void Memory::init_stack(Memory::memoryMap p) {
-    
 }

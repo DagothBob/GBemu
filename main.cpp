@@ -26,14 +26,13 @@ int main(int argc, char** argv) {
         std::cout << "Error initializing SDL: " << SDL_GetError();
     }
     initDisplay();
-    
+
     ///////////////
     // Main loop //
     ///////////////
     quit = false;
-    
-    while (!quit)
-    {
+
+    while (!quit) {
         handleEvents();
     }
     std::exit(0);
@@ -51,9 +50,11 @@ void exit() {
 ////////////////////////////
 void initDisplay() {
     SDL_Window* window = SDL_CreateWindow("GBemu",
-                                        SDL_WINDOWPOS_CENTERED, 
-                                        SDL_WINDOWPOS_CENTERED,
-                                        640, 576, 0);
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        640,
+        576,
+        0);
     SDL_Surface* windowSurface = NULL;
 
     if (window == NULL) {
@@ -73,8 +74,7 @@ void handleEvents() {
 
     // SDL events //
     while (SDL_PollEvent(&e) != 0) {
-        switch (e.type)
-        {
+        switch (e.type) {
         case SDL_QUIT:
             quit = true;
             break;
