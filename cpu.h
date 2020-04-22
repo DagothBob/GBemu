@@ -37,7 +37,9 @@ class CPU {
     uint16_t swap_endian(uint16_t bytes);
     uint16_t concat_regist(uint8_t most, uint8_t least);
     void dec_16bit(uint8_t& most, uint8_t& least);
+    void dec_16bit(uint16_t& reg);
     void inc_16bit(uint8_t& most, uint8_t& least);
+    void inc_16bit(uint16_t& reg);
     void op_Load(uint8_t opcode, uint16_t arg);
     void op_Push(uint8_t opcode, uint16_t arg);
     void op_Pop(uint8_t opcode, uint16_t arg);

@@ -78,20 +78,33 @@ uint16_t CPU::concat_regist(uint8_t most, uint8_t least) {
     return (uint16_t)((most << 8) | least);
 }
 
+// Decrementing 8-bit combined register
 void CPU::dec_16bit(uint8_t& most, uint8_t& least) {
     uint16_t dec = concat_regist(most, least) - 0x1;
     most = (uint8_t)(dec >> 8);
     least = (uint8_t)dec;
 }
 
+// Decrementing true 16-bit register
+void CPU::dec_16bit(uint16_t& reg) {
+    reg = swap_endian(reg - 1);
+}
+
+// Incrementing 8-bit combined register
 void CPU::inc_16bit(uint8_t& most, uint8_t& least) {
     uint16_t dec = concat_regist(most, least) + 0x1;
     most = (uint8_t)(dec >> 8);
     least = (uint8_t)dec;
 }
 
-// Load OP codes
-// arg is usually equivalent to nn in assembly
+// Incrementing true 16-bit register
+void CPU::inc_16bit(uint16_t& reg) {
+    reg = swap_endian(reg + 1);
+}
+
+///////////////////////
+// OP code functions //
+///////////////////////
 void CPU::op_Load(uint8_t opcode, uint16_t arg) {
     uint8_t oldL;
     uint16_t SPn;
@@ -405,28 +418,28 @@ void CPU::op_Load(uint8_t opcode, uint16_t arg) {
 void CPU::op_Push(uint8_t opcode, uint16_t arg) {
     switch (opcode) {
     case (0xC5):
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.B);
-        registers.SP--;
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.C);
-        registers.SP--;
         break;
     case (0xD5):
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.D);
-        registers.SP--;
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.E);
-        registers.SP--;
         break;
     case (0xE5):
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.H);
-        registers.SP--;
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.L);
-        registers.SP--;
         break;
     case (0xF5):
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.A);
-        registers.SP--;
+        dec_16bit(registers.SP);
         gbmemory.set_memory(registers.SP, registers.F);
-        registers.SP--;
         break;
     default:
         break;
@@ -437,27 +450,27 @@ void CPU::op_Pop(uint8_t opcode, uint16_t arg) {
     switch (opcode) {
     case (0xC1):
         registers.C = gbmemory.get_memory(registers.SP);
-        registers.SP++;
+        inc_16bit(registers.SP);
         registers.B = gbmemory.get_memory(registers.SP);
-        registers.SP--;
+        inc_16bit(registers.SP);
         break;
     case (0xD1):
         registers.E = gbmemory.get_memory(registers.SP);
-        registers.SP++;
+        inc_16bit(registers.SP);
         registers.D = gbmemory.get_memory(registers.SP);
-        registers.SP--;
+        inc_16bit(registers.SP);
         break;
     case (0xE1):
         registers.L = gbmemory.get_memory(registers.SP);
-        registers.SP++;
+        inc_16bit(registers.SP);
         registers.H = gbmemory.get_memory(registers.SP);
-        registers.SP--;
+        inc_16bit(registers.SP);
         break;
     case (0xF1):
         registers.F = gbmemory.get_memory(registers.SP);
-        registers.SP++;
+        inc_16bit(registers.SP);
         registers.A = gbmemory.get_memory(registers.SP);
-        registers.SP--;
+        inc_16bit(registers.SP);
         break;
     default:
         break;
@@ -2295,7 +2308,7 @@ void CPU::op_Increment(uint8_t opcode, uint16_t arg) {
             registers.F &= ~FLAG_HALF;
         break;
     case (0x33):
-        registers.SP++;
+        inc_16bit(registers.SP);
         break;
     case (0x34):
         old = gbmemory.get_memory(concat_regist(registers.L, registers.H));
@@ -2472,7 +2485,7 @@ void CPU::op_Decrement(uint8_t opcode, uint16_t arg) {
             registers.F &= ~FLAG_HALF;
         break;
     case (0x3B):
-        registers.SP--;
+        dec_16bit(registers.SP);
         break;
     default:
         break;
@@ -3654,22 +3667,376 @@ void CPU::op_Shift(uint8_t opcode, uint16_t arg) {
 }
 
 void CPU::op_Bit(uint8_t opcode, uint16_t arg) {
+    uint8_t test, get, set;
+
+    switch (opcode) {
+    case (0x40):
+        test = 0b00000001 << arg;
+
+        if ((registers.B & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x41):
+        test = 0b00000001 << arg;
+
+        if ((registers.C & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x42):
+        test = 0b00000001 << arg;
+
+        if ((registers.D & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x43):
+        test = 0b00000001 << arg;
+
+        if ((registers.E & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x44):
+        test = 0b00000001 << arg;
+
+        if ((registers.H & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x45):
+        test = 0b00000001 << arg;
+
+        if ((registers.L & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x46):
+        test = 0b00000001 << arg;
+        get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+
+        if ((get & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x47):
+        test = 0b00000001 << arg;
+
+        if ((registers.A & test) == 0x0)
+            registers.F |= FLAG_ZERO;
+        else
+            registers.F &= ~FLAG_ZERO;
+
+        registers.F &= ~FLAG_ADSB;
+        registers.F |= FLAG_HALF;
+        break;
+    case (0x80):
+        registers.B &= ~(0b00000001 < arg);
+        break;
+    case (0x81):
+        registers.C &= ~(0b00000001 < arg);
+        break;
+    case (0x82):
+        registers.D &= ~(0b00000001 < arg);
+        break;
+    case (0x83):
+        registers.E &= ~(0b00000001 < arg);
+        break;
+    case (0x84):
+        registers.H &= ~(0b00000001 < arg);
+        break;
+    case (0x85):
+        registers.L &= ~(0b00000001 < arg);
+        break;
+    case (0x86):
+        get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+        gbmemory.set_memory(concat_regist(registers.L, registers.H), get & ~(0b00000001 < arg));
+        break;
+    case (0x87):
+        registers.L &= ~(0b00000001 < arg);
+        break;
+    case (0xC0):
+        registers.B |= (0b00000001 < arg);
+        break;
+    case (0xC1):
+        registers.C |= (0b00000001 < arg);
+        break;
+    case (0xC2):
+        registers.D |= (0b00000001 < arg);
+        break;
+    case (0xC3):
+        registers.E |= (0b00000001 < arg);
+        break;
+    case (0xC4):
+        registers.H |= (0b00000001 < arg);
+        break;
+    case (0xC5):
+        registers.L |= (0b00000001 < arg);
+        break;
+    case (0xC6):
+        get = gbmemory.get_memory(concat_regist(registers.L, registers.H));
+        gbmemory.set_memory(concat_regist(registers.L, registers.H), get | (0b00000001 < arg));
+        break;
+    case (0xC7):
+        registers.L |= (0b00000001 < arg);
+        break;
+    default:
+        break;
+    }
 }
 
 void CPU::op_Jump(uint8_t opcode, uint16_t arg) {
+    switch (opcode) {
+    case (0x18):
+        registers.PC += (uint8_t)arg;
+        break;
+    case (0x20):
+        if ((registers.F & FLAG_ZERO) == 0x0)
+            registers.PC += (uint8_t)arg;
+        break;
+    case (0x28):
+        if ((registers.F & FLAG_ZERO) > 0x0)
+            registers.PC += (uint8_t)arg;
+        break;
+    case (0x30):
+        if ((registers.F & FLAG_CARY) == 0x0)
+            registers.PC += (uint8_t)arg;
+        break;
+    case (0x38):
+        if ((registers.F & FLAG_ZERO) > 0x0)
+            registers.PC += (uint8_t)arg;
+        break;
+    case (0xC2):
+        if ((registers.F & FLAG_ZERO) == 0x0)
+            registers.PC = arg;
+        break;
+    case (0xC3):
+        registers.PC = arg;
+        break;
+    case (0xCA):
+        if ((registers.F & FLAG_ZERO) > 0)
+            registers.PC = arg;
+        break;
+    case (0xD2):
+        if ((registers.F & FLAG_CARY) == 0x0)
+            registers.PC = arg;
+        break;
+    case (0xDA):
+        if ((registers.F & FLAG_CARY) > 0x0)
+            registers.PC = arg;
+        break;
+    case (0xE9):
+        registers.PC = concat_regist(registers.H, registers.L);
+        break;
+    default:
+        break;
+    }
 }
 
 void CPU::op_Call(uint8_t opcode, uint16_t arg) {
+    switch (opcode) {
+    case (0xC4):
+        if ((registers.F & FLAG_ADSB) == 0x0) {
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+            registers.PC = arg;
+        }
+        break;
+    case (0xCC):
+        if ((registers.F & FLAG_ADSB) > 0x0) {
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+            registers.PC = arg;
+        }
+        break;
+    case (0xCD):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = arg;
+        break;
+    case (0xD4):
+        if ((registers.F & FLAG_CARY) == 0x0) {
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+            registers.PC = arg;
+        }
+        break;
+    case (0xDC):
+        if ((registers.F & FLAG_CARY) > 0x0) {
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+            dec_16bit(registers.SP);
+            gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+            registers.PC = arg;
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void CPU::op_Restart(uint8_t opcode, uint16_t arg) {
+    switch (opcode) {
+    case (0xC7):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0000;
+        break;
+    case (0xCF):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0008;
+        break;
+    case (0xD7):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0010;
+        break;
+    case (0xDF):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0018;
+        break;
+    case (0xE7):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0020;
+        break;
+    case (0xEF):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0028;
+        break;
+    case (0xF7):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0030;
+        break;
+    case (0xFF):
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)(registers.PC >> 8));
+        dec_16bit(registers.SP);
+        gbmemory.set_memory(swap_endian(registers.SP), (uint8_t)registers.PC);
+        registers.PC = 0x0038;
+        break;
+    default:
+        break;
+    }
 }
 
 void CPU::op_Return(uint8_t opcode, uint16_t arg) {
+    uint8_t least, most;
+
+    switch (opcode) {
+    case (0xC0):
+        if ((registers.F & FLAG_ZERO) == 0x0) {
+            least = gbmemory.get_memory(registers.SP);
+            inc_16bit(registers.SP);
+            most = gbmemory.get_memory(registers.SP);
+            dec_16bit(registers.SP);
+            registers.PC = (most << 8) | least;
+        }
+        break;
+    case (0xC8):
+        if ((registers.F & FLAG_ZERO) > 0x0) {
+            least = gbmemory.get_memory(registers.SP);
+            inc_16bit(registers.SP);
+            most = gbmemory.get_memory(registers.SP);
+            dec_16bit(registers.SP);
+            registers.PC = (most << 8) | least;
+        }
+        break;
+    case (0xC9):
+        least = gbmemory.get_memory(registers.SP);
+        inc_16bit(registers.SP);
+        most = gbmemory.get_memory(registers.SP);
+        dec_16bit(registers.SP);
+        registers.PC = (most << 8) | least;
+        break;
+    case (0xD0):
+        if ((registers.F & FLAG_CARY) == 0x0) {
+            least = gbmemory.get_memory(registers.SP);
+            inc_16bit(registers.SP);
+            most = gbmemory.get_memory(registers.SP);
+            dec_16bit(registers.SP);
+            registers.PC = (most << 8) | least;
+        }
+        break;
+    case (0xD8):
+        if ((registers.F & FLAG_CARY) > 0x0) {
+            least = gbmemory.get_memory(registers.SP);
+            inc_16bit(registers.SP);
+            most = gbmemory.get_memory(registers.SP);
+            dec_16bit(registers.SP);
+            registers.PC = (most << 8) | least;
+        }
+        break;
+    case (0xD9):
+        least = gbmemory.get_memory(registers.SP);
+        inc_16bit(registers.SP);
+        most = gbmemory.get_memory(registers.SP);
+        dec_16bit(registers.SP);
+        registers.PC = (most << 8) | least;
+        // TODO: enable interrupts
+        break;
+    }
 }
 
 void CPU::op_CB(uint8_t opcode, uint16_t arg) {
+    (this->*CBops[opcode])(opcode, arg);
 }
 
 void CPU::op_Unknown(uint8_t opcode, uint16_t arg) {
+    std::cout << "Unknown OPcode: " << opcode << "\n";
 }
