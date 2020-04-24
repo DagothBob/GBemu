@@ -54,6 +54,8 @@ void (CPU::*CBops[0x100])(uint8_t, uint16_t) = {
     // clang-format on
 };
 
+CPU::CPU() {}
+
 // Initialize registers to boot-up state
 CPU::CPU(Memory& mem) {
     gbmemory = mem;

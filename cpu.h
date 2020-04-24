@@ -33,6 +33,7 @@ class CPU {
     void (CPU::*CBops[0x100])(uint8_t, uint16_t);
     Memory gbmemory;
 
+    CPU();
     CPU(Memory& mem);
     uint16_t swap_endian(uint16_t bytes);
     uint16_t concat_regist(uint8_t most, uint8_t least);
