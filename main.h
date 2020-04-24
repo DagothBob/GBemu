@@ -2,17 +2,17 @@
 #define MAIN_H
 
 // C++ libraries
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <cmath>
-#include <vector>
+#include <fstream>
 #include <ios>
+#include <iostream>
+#include <sstream>
+#include <vector>
 
 // SDL libraries
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_video.h>
 
 // GBemu sources
 #include "cpu.h"

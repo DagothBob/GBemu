@@ -41,6 +41,10 @@ Memory::Memory() {
     set_memory(0xFF49, 0xFF);
 }
 
+Memory Memory::operator=(Memory& mem) {
+    return mem;
+}
+
 // GB is little-endian
 void Memory::set_memory(uint16_t addr, uint8_t val) {
     if (addr < 0x4000) {

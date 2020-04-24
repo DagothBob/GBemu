@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     // Gameboy startup //
     /////////////////////
     loadROM(argv[1]);
-    memory = Memory();
+    new (&memory) Memory();
     CPU cpu(memory);
 
     ///////////////
@@ -86,8 +86,8 @@ void loadROM(char* arg) {
         std::cout << "Error opening file \'" << arg << "\'" << std::endl;
         exit();
     }
-    
-    new(&rombytes) std::vector<uint8_t>((std::istreambuf_iterator<char>(rom)), std::istreambuf_iterator<char>());
+
+    new (&rombytes) std::vector<uint8_t>((std::istreambuf_iterator<char>(rom)), std::istreambuf_iterator<char>());
 
     rom.close();
 }
@@ -119,7 +119,7 @@ void initDisplay() {
     }
 }
 
-// Part of main loop. 
+// Part of main loop.
 // Handles input, etc.
 void handleEvents() {
     SDL_Event e;
@@ -152,13 +152,13 @@ void renderFPSText() {
     float avgFPS = (frameCount / (framesTimer.getTime() / 1000.f));
     if (avgFPS > 2000)
         avgFPS = 0;
-    
+
     fpsText.str("");
     fpsText << "FPS: " << avgFPS;
 
-    fpsDisplaySurface = TTF_RenderText_Solid(font, fpsText.str().c_str(), SDL_Color {0,0,0,255});
+    fpsDisplaySurface = TTF_RenderText_Solid(font, fpsText.str().c_str(), SDL_Color{0, 0, 0, 255});
     fpsDisplayTexture = SDL_CreateTextureFromSurface(renderer, fpsDisplaySurface);
-    SDL_Rect* fpsDisplayRect; 
+    SDL_Rect* fpsDisplayRect;
     SDL_GetClipRect(fpsDisplaySurface, fpsDisplayRect);
     SDL_RenderCopy(renderer, fpsDisplayTexture, fpsDisplayRect, fpsDisplayRect);
 
@@ -168,14 +168,13 @@ void renderFPSText() {
 // Take the pixel information from the gameboy
 // and render it to a texture
 void renderGBScreen() {
-
 }
 
 // Wait for the frame to complete
 void syncFramerate() {
     uint32_t frameTime = frameTimer.getTime();
     uint32_t tpm = (uint32_t)round(1000.f / 60.f);
-    
+
     if (frameTime < tpm) {
         SDL_Delay(tpm - frameTime);
     }
