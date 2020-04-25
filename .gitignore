@@ -1,3 +1,4 @@
 /GBemu
 /.vscode/*
 /gbemu.code-workspace
+/*.gb

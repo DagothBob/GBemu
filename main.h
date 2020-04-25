@@ -22,6 +22,7 @@
 
 bool quit;
 uint64_t frameCount;
+uint32_t tickCount;
 std::stringstream fpsText;
 std::vector<uint8_t> rombytes;
 std::ifstream rom;
@@ -45,6 +46,7 @@ void exit();
 void loadROM(char* arg);
 void initDisplay();
 void handleEvents();
+void handleCPU();
 void handleDisplay();
 void renderFPSText();
 void renderGBScreen();

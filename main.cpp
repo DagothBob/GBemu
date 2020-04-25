@@ -58,9 +58,10 @@ int main(int argc, char** argv) {
     frameTimer.start();
 
     while (!quit) {
+        tickCount = frameTimer.getTime();
         frameTimer.restart();
         handleEvents();
-
+        handleCPU();
         handleDisplay();
         syncFramerate();
         ++frameCount;
@@ -89,7 +90,11 @@ void loadROM(char* arg) {
 
     new (&rombytes) std::vector<uint8_t>((std::istreambuf_iterator<char>(rom)), std::istreambuf_iterator<char>());
 
+    for (auto i = 0; i < rombytes.size(); ++i) {
+        memory.set_memory(i, rombytes[i]);
+    }
     rom.close();
+    free (&rombytes);
 }
 
 // Initialize SDL display
@@ -136,6 +141,19 @@ void handleEvents() {
     }
 }
 
+// OPcodes
+void handleCPU() {
+    auto i = cpu.swap_endian(cpu.registers.PC);
+    // Prefix byte
+    if (rombytes[i] == 0xDD || rombytes[i] == 0xED || rombytes[i] == 0xFD) {
+        cpu.inc_16bit(cpu.registers.PC);
+    }
+    // CB
+    if (rombytes[i] == 0xCB) {
+        //cpu.opcodes[0xCB](rombytes[++i], rombytes[++i]);
+    }
+}
+
 // Part of main loop
 // Video stuff
 void handleDisplay() {
@@ -149,12 +167,10 @@ void handleDisplay() {
 
 // Renders the FPS counter text
 void renderFPSText() {
-    float avgFPS = (frameCount / (framesTimer.getTime() / 1000.f));
-    if (avgFPS > 2000)
-        avgFPS = 0;
+    float avgFPS = (float)tickCount;
 
     fpsText.str("");
-    fpsText << "FPS: " << avgFPS;
+    fpsText << "TPF: " << avgFPS;
 
     fpsDisplaySurface = TTF_RenderText_Solid(font, fpsText.str().c_str(), SDL_Color{0, 0, 0, 255});
     fpsDisplayTexture = SDL_CreateTextureFromSurface(renderer, fpsDisplaySurface);

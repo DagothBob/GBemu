@@ -102,7 +102,7 @@ void CPU::inc_16bit(uint8_t& most, uint8_t& least) {
 
 // Incrementing true 16-bit register
 void CPU::inc_16bit(uint16_t& reg) {
-    reg = swap_endian(reg + 1);
+    reg = swap_endian(swap_endian(reg) + 1);
 }
 
 ///////////////////////
