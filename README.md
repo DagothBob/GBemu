@@ -1,4 +1,4 @@
 # GBemu
 Gameboy emulator that isn't better than any existing emulator
 
-(Unfinished and probably never will be)
+(Current iteration in Rust: https://github.com/DagothBob/Dama.GB)
